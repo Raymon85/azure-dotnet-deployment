@@ -1,0 +1,42 @@
+# ============================================================================
+# Systemd Service File for Rayan Web Application
+# Location on server: /etc/systemd/system/webapp.service
+# ============================================================================
+
+[Unit]
+Description=Rayan .NET Web Application
+After=network.target
+
+[Service]
+# Run as non-root user for security
+User=azureuser
+Group=azureuser
+
+# Application settings
+WorkingDirectory=/opt/webapp
+ExecStart=/usr/bin/dotnet /opt/webapp/WebApp.dll
+Restart=always
+RestartSec=10
+
+# Environment variables
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://0.0.0.0:5000
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/webapp
+
+# Logging - output goes to journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rayan-webapp
+
+# Resource limits
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
