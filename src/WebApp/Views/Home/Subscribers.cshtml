@@ -1,0 +1,55 @@
+@model List<WebApp.Models.SubscriberEntry>
+@{
+    ViewData["Title"] = "Subscribers";
+}
+
+<h2 class="mb-4">Subscribers</h2>
+
+@if (TempData["SubscribersMessage"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["SubscribersMessage"]
+    </div>
+}
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        No subscribers yet. Go to the <a asp-action="Index" class="alert-link">Home page</a> to subscribe.
+    </div>
+}
+else
+{
+    <p class="text-muted mb-3">Total subscribers: <strong>@Model.Count</strong></p>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Subscribed At (UTC)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].Email</td>
+                    <td>@Model[i].SubscribedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <form asp-action="DeleteSubscriber" asp-controller="Home" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="email" value="@Model[i].Email" />
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to remove @Model[i].Email?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
