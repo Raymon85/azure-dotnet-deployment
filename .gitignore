@@ -1,0 +1,82 @@
+# .NET
+*.swp
+*.swo
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+nupkg/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build results
+*.dll
+*.exe
+*.pdb
+*.mdb
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+
+# ASP.NET
+ScaffoldingReadMe.txt
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# dotnet tool
+.config/dotnet-tools.json
+
+# Publish output
+publish/
+
+# Azure
+.azure/
+
+# Secrets
+appsettings.Development.json
+secrets.json
+*.pfx
+*.key
