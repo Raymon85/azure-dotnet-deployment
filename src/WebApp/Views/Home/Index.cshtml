@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <div class="py-5">
+        <h1 class="display-1 fw-bold text-primary">Rayan</h1>
+        <p class="lead text-muted mt-3">
+            Azure Cloud Deployment Project
+        </p>
+        <hr class="my-4 w-50 mx-auto" />
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">.NET MVC</h5>
+                    <p class="card-text">Built with ASP.NET Core MVC framework, following the Model-View-Controller pattern.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Azure VM</h5>
+                    <p class="card-text">Deployed on an Azure Virtual Machine running Ubuntu Server with automated provisioning.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Infrastructure as Code</h5>
+                    <p class="card-text">Azure Bicep templates for reproducible and version-controlled infrastructure.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 p-4 bg-light rounded">
+        <h4>System Information</h4>
+        <p class="mb-1"><strong>Server Time:</strong> @DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")</p>
+        <p class="mb-1"><strong>Runtime:</strong> @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</p>
+        <p class="mb-0"><strong>OS:</strong> @System.Runtime.InteropServices.RuntimeInformation.OSDescription</p>
+    </div>
+</div>
