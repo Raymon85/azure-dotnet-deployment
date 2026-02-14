@@ -5,33 +5,33 @@
 
 <div class="text-center">
     <div class="py-5">
-        <h1 class="display-1 fw-bold text-primary">Rayan</h1>
-        <p class="lead text-muted mt-3">
+        <h1 class="hero-title fw-bold">Rayan</h1>
+        <p class="hero-subtitle lead mt-3">
             Azure Cloud Deployment Project
         </p>
-        <hr class="my-4 w-50 mx-auto" />
+        <hr class="divider-gradient w-50 mx-auto my-4" />
     </div>
 
     <div class="row justify-content-center mt-4">
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
+            <div class="card card-feature shadow-sm h-100">
+                <div class="card-body p-4">
                     <h5 class="card-title">.NET MVC</h5>
                     <p class="card-text">Built with ASP.NET Core MVC framework, following the Model-View-Controller pattern.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
+            <div class="card card-feature shadow-sm h-100">
+                <div class="card-body p-4">
                     <h5 class="card-title">Azure VM</h5>
                     <p class="card-text">Deployed on an Azure Virtual Machine running Ubuntu Server with automated provisioning.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
+            <div class="card card-feature shadow-sm h-100">
+                <div class="card-body p-4">
                     <h5 class="card-title">Infrastructure as Code</h5>
                     <p class="card-text">Azure Bicep templates for reproducible and version-controlled infrastructure.</p>
                 </div>
@@ -42,10 +42,10 @@
     <!-- Subscribe Section -->
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card card-subscribe shadow-lg">
                 <div class="card-body p-4">
                     <h4 class="card-title mb-3">Subscribe to Updates</h4>
-                    <p class="text-muted mb-4">Enter your email to receive project updates and notifications.</p>
+                    <p class="mb-4">Enter your email to receive project updates and notifications.</p>
 
                     @if (TempData["SubscribeSuccess"] != null)
                     {
@@ -68,7 +68,7 @@
                                    class="form-control @(ViewContext.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
                                    placeholder="name@example.com"
                                    type="text" />
-                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                            <button type="submit" class="btn btn-subscribe">Subscribe</button>
                             <span asp-validation-for="Email" class="invalid-feedback"></span>
                         </div>
                     </form>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <div class="mt-5 p-4 bg-light rounded">
+    <div class="mt-5 p-4 system-info">
         <h4>System Information</h4>
         <p class="mb-1"><strong>Server Time:</strong> @DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")</p>
         <p class="mb-1"><strong>Runtime:</strong> @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</p>
