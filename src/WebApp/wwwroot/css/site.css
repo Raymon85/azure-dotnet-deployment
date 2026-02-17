@@ -296,3 +296,22 @@ body {
   padding: 8px 16px;
   border-radius: 20px;
 }
+
+/* jQuery Validation ↔ Bootstrap bridge */
+.input-validation-error {
+  border-color: #fdcb6e !important;
+}
+
+.field-validation-error {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fdcb6e;
+}
+
+.card-subscribe .field-validation-error {
+  color: #fdcb6e;
+  text-align: left;
+}

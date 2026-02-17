@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projektrapport - Azure Cloud Deployment - Rayan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: #2d3436;
+            line-height: 1.7;
+            background: #f8f9fe;
+            font-size: 11pt;
+        }
+
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px 50px;
+        }
+
+        @media print {
+            body { background: #fff; font-size: 10pt; }
+            .page { padding: 20px 30px; max-width: 100%; }
+            .page-break { page-break-before: always; }
+            h2 { page-break-after: avoid; }
+            pre, table { page-break-inside: avoid; }
+        }
+
+        /* Header */
+        .report-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(135deg, #6c5ce7, #00cec9) 1;
+            margin-bottom: 35px;
+        }
+
+        .report-header h1 {
+            font-size: 28pt;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6c5ce7, #00cec9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .report-header .subtitle {
+            font-size: 14pt;
+            color: #636e72;
+            font-weight: 400;
+        }
+
+        .meta-table {
+            width: 100%;
+            margin: 25px 0;
+            border-collapse: collapse;
+        }
+
+        .meta-table td {
+            padding: 8px 16px;
+            border: 1px solid #dfe6e9;
+            font-size: 10pt;
+        }
+
+        .meta-table td:first-child {
+            font-weight: 600;
+            background: #f8f9fe;
+            width: 180px;
+            color: #6c5ce7;
+        }
+
+        .meta-table a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        /* Headings */
+        h2 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #6c5ce7;
+            margin: 35px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dfe6e9;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 20px 0 10px;
+        }
+
+        h4 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #636e72;
+            margin: 15px 0 8px;
+        }
+
+        p { margin-bottom: 10px; }
+
+        /* Code */
+        pre {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 9pt;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 12px 0 16px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 9pt;
+            background: #f0f0f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #6c5ce7;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .keyword { color: #6c5ce7; }
+        .string { color: #00cec9; }
+        .comment { color: #636e72; font-style: italic; }
+        .type { color: #fd79a8; }
+        .attr { color: #fdcb6e; }
+
+        /* Tables */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 10pt;
+        }
+
+        table.data-table thead {
+            background: linear-gradient(135deg, #6c5ce7, #00cec9);
+        }
+
+        table.data-table th {
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table.data-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #dfe6e9;
+        }
+
+        table.data-table tbody tr:hover {
+            background: #f8f9fe;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 8px 0 12px 24px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* Architecture diagram */
+        .arch-diagram {
+            background: #2d3436;
+            color: #00cec9;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8.5pt;
+            line-height: 1.4;
+            margin: 12px 0 16px;
+            text-align: center;
+            white-space: pre;
+        }
+
+        /* Info box */
+        .info-box {
+            background: linear-gradient(135deg, #f8f9fe, #e8e6ff);
+            border-left: 4px solid #6c5ce7;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0 16px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff9e6, #fff3cd);
+            border-left: 4px solid #fdcb6e;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0 16px;
+        }
+
+        /* Project structure */
+        .tree {
+            background: #f8f9fe;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 9pt;
+            line-height: 1.6;
+            margin: 12px 0 16px;
+            border: 1px solid #dfe6e9;
+        }
+
+        /* Screenshot placeholder */
+        .screenshot-placeholder {
+            background: #f8f9fe;
+            border: 2px dashed #b2bec3;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            color: #636e72;
+            margin: 12px 0 16px;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .report-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #dfe6e9;
+            text-align: center;
+            color: #636e72;
+            font-size: 9pt;
+        }
+
+        /* Numbered sections */
+        .section-num {
+            color: #00cec9;
+            font-weight: 700;
+        }
+
+        /* Commit list */
+        .commit-list {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .commit-list li {
+            padding: 8px 14px;
+            border-left: 3px solid #6c5ce7;
+            margin-bottom: 6px;
+            background: #f8f9fe;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .commit-list li .commit-num {
+            display: inline-block;
+            background: #6c5ce7;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 9pt;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        strong { font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="report-header">
+        <h1>Azure Cloud Deployment</h1>
+        <div class="subtitle">Projektrapport &mdash; Driftsättning av .NET-webbapplikation i molnet</div>
+    </div>
+
+    <table class="meta-table">
+        <tr><td>Student</td><td><strong>Rayan</strong></td></tr>
+        <tr><td>GitHub</td><td><a href="https://github.com/Raymon85/azure-dotnet-deployment">https://github.com/Raymon85/azure-dotnet-deployment</a></td></tr>
+        <tr><td>Live-applikation</td><td><a href="http://4.225.161.222:5000">http://4.225.161.222:5000</a></td></tr>
+        <tr><td>Azure-region</td><td>Sweden Central</td></tr>
+        <tr><td>VM</td><td>Standard_D2s_v3 &bull; Ubuntu 22.04 LTS</td></tr>
+    </table>
+
+    <!-- 1. PROJEKTBESKRIVNING -->
+    <h2><span class="section-num">1.</span> Projektbeskrivning</h2>
+    <p>
+        Projektet handlar om att bygga och driftsätta en .NET-webbapplikation på en virtuell maskin i Microsoft Azure.
+        Applikationen är en ASP.NET Core MVC-webbplats med prenumerationsfunktionalitet, och all infrastruktur hanteras
+        med Infrastructure as Code (Azure Bicep). Hela projektet versionshanteras med Git och är publicerat på GitHub.
+    </p>
+
+    <h3>Projektstruktur</h3>
+    <div class="tree">
+azure-dotnet-deployment/
+├── src/WebApp/                  # .NET MVC-applikation
+│   ├── Controllers/             # MVC Controllers
+│   ├── Models/                  # ViewModels och datamodeller
+│   ├── Views/                   # Razor-vyer (Home, Shared)
+│   └── wwwroot/css/             # CSS-tema
+├── infrastructure/              # Azure Bicep-mallar
+│   ├── vm-template.bicep        # VM-infrastruktur (IaC)
+│   └── vm-template.parameters.json
+├── scripts/                     # Deployment-skript
+│   ├── setup-dotnet.sh          # .NET runtime-installation
+│   └── deploy-app.sh            # Applikationsdeploy
+├── config/
+│   └── webapp.service           # systemd-tjänstkonfiguration
+├── README.md                    # Dokumentation
+└── SECURITY.md                  # Säkerhetsdokumentation
+    </div>
+
+    <!-- 2. VIKTIGA BESLUT -->
+    <h2><span class="section-num">2.</span> Viktiga beslut</h2>
+
+    <h3>2.1 Val av ramverk: ASP.NET Core MVC</h3>
+    <p>
+        Jag valde ASP.NET Core MVC eftersom det ger en tydlig separation mellan modell, vy och controller (MVC-mönstret).
+        Ramverket har inbyggt stöd för validering via Data Annotations, CSRF-skydd med AntiForgeryToken,
+        och Razor-vyer för dynamisk HTML-rendering.
+    </p>
+
+    <h3>2.2 Infrastructure as Code: Azure Bicep</h3>
+    <p>
+        Istället för att manuellt skapa resurser i Azure Portal valde jag att använda Azure Bicep-mallar.
+        Bicep är ett deklarativt språk som kompileras till ARM-mallar och gör infrastrukturen:
+    </p>
+    <ul>
+        <li><strong>Reproducerbar</strong> &ndash; samma mall kan köras igen för identisk infrastruktur</li>
+        <li><strong>Versionshanterad</strong> &ndash; infrastrukturkoden sparas i Git tillsammans med applikationskoden</li>
+        <li><strong>Dokumenterad</strong> &ndash; mallen fungerar som dokumentation för vilka resurser som används</li>
+    </ul>
+
+    <h3>2.3 VM-storlek och region</h3>
+    <p>
+        Ursprungligen planerade jag att använda <code>Standard_B2s</code> i North Europe, men denna VM-storlek var
+        inte tillgänglig (pensionerad B-serie). Efter att ha sökt genom flera regioner och VM-familjer med Azure CLI valde jag:
+    </p>
+    <div class="info-box">
+        <strong>VM-storlek:</strong> Standard_D2s_v3 (2 vCPUs, 8 GB RAM)<br>
+        <strong>Region:</strong> Sweden Central<br>
+        <strong>OS:</strong> Ubuntu Server 22.04 LTS (Gen2)
+    </div>
+
+    <h3>2.4 SSH-nyckelautentisering</h3>
+    <p>
+        SSH-nyckelautentisering valdes framför lösenord. SSH-nycklar är kryptografiskt starka (2048+ bitar),
+        blockerar brute force-attacker, och konfigureras automatiskt via Bicep-mallen.
+    </p>
+
+    <h3>2.5 Self-contained deployment</h3>
+    <p>
+        Eftersom den lokala utvecklingsmiljön kör .NET 10 medan VM:en har .NET 8 runtime, publicerades applikationen
+        som <em>self-contained</em>. Runtime:n bundlas med applikationen och eliminerar versionskonflikter.
+    </p>
+
+    <h3>2.6 systemd för proceshantering</h3>
+    <p>
+        Applikationen körs som en systemd-tjänst med automatisk omstart vid krasch, automatisk start vid serveromstart,
+        säkerhetshärdning och centraliserad loggning via journald.
+    </p>
+
+    <!-- 3. APPLIKATIONENS FUNKTIONALITET -->
+    <h2><span class="section-num">3.</span> Applikationens funktionalitet</h2>
+
+    <h3>3.1 Startsida med prenumeration</h3>
+    <p>
+        Startsidan visar mitt namn &ldquo;Rayan&rdquo; med en gradient-effekt och innehåller tre feature-kort
+        som beskriver teknologierna, ett prenumerationsformulär med e-postvalidering, samt systeminformation.
+    </p>
+
+    <h3>3.2 E-postvalidering (SubscribeViewModel)</h3>
+    <p>E-postadressen valideras med Data Annotations både på klient- och serversidan:</p>
+<pre><code><span class="keyword">public class</span> <span class="type">SubscribeViewModel</span>
+{
+    [<span class="attr">Required</span>(<span class="attr">ErrorMessage</span> = <span class="string">"Email address is required."</span>)]
+    [<span class="attr">EmailAddress</span>(<span class="attr">ErrorMessage</span> = <span class="string">"Invalid email format! Correct format: name@example.com"</span>)]
+    [<span class="attr">Display</span>(<span class="attr">Name</span> = <span class="string">"Email Address"</span>)]
+    <span class="keyword">public string</span> Email { <span class="keyword">get</span>; <span class="keyword">set</span>; } = <span class="keyword">string</span>.Empty;
+}</code></pre>
+
+    <h3>3.3 Subscribe-controller (HomeController)</h3>
+    <p>Controllern hanterar prenumerationer med validering, dubblettdetektering och CSRF-skydd:</p>
+<pre><code>[<span class="attr">HttpPost</span>]
+[<span class="attr">ValidateAntiForgeryToken</span>]
+<span class="keyword">public</span> <span class="type">IActionResult</span> Subscribe(<span class="type">SubscribeViewModel</span> model)
+{
+    <span class="keyword">if</span> (!ModelState.IsValid)
+        <span class="keyword">return</span> View(<span class="string">"Index"</span>, model);
+
+    <span class="keyword">if</span> (_subscribers.Any(s =&gt; s.Email.Equals(model.Email,
+            <span class="type">StringComparison</span>.OrdinalIgnoreCase)))
+    {
+        TempData[<span class="string">"SubscribeError"</span>] = $<span class="string">"{model.Email} is already subscribed."</span>;
+        <span class="keyword">return</span> RedirectToAction(<span class="string">"Index"</span>);
+    }
+
+    _subscribers.Add(<span class="keyword">new</span> <span class="type">SubscriberEntry</span>
+    {
+        Email = model.Email,
+        SubscribedAt = <span class="type">DateTime</span>.UtcNow
+    });
+
+    TempData[<span class="string">"SubscribeSuccess"</span>] = $<span class="string">"Thank you! {model.Email} has been subscribed."</span>;
+    <span class="keyword">return</span> RedirectToAction(<span class="string">"Index"</span>);
+}</code></pre>
+
+    <div class="info-box">
+        <strong>Notera:</strong> <code>[ValidateAntiForgeryToken]</code> skyddar mot CSRF-attacker och
+        <code>StringComparison.OrdinalIgnoreCase</code> förhindrar dubbletter oavsett skiftläge.
+    </div>
+
+    <h3>3.4 Prenumeranthantering (Subscribers)</h3>
+    <p>
+        Sidan &ldquo;Subscribers&rdquo; visar alla registrerade prenumeranter i en tabell med möjlighet att radera
+        enskilda poster. Delete-åtgärden skyddas med <code>[ValidateAntiForgeryToken]</code> och en JavaScript-bekräftelsedialog.
+    </p>
+
+    <!-- 4. AZURE-INFRASTRUKTUR -->
+    <h2 class="page-break"><span class="section-num">4.</span> Azure-infrastruktur (Bicep)</h2>
+
+    <h3>4.1 Arkitekturöversikt</h3>
+    <div class="arch-diagram">
+┌──────────────────────────────────────────────────────┐
+│              Azure (Sweden Central)                   │
+│  ┌────────────────────────────────────────────────┐  │
+│  │         Resource Group: rayan-rg               │  │
+│  │                                                │  │
+│  │  ┌──────────────────────────────────────────┐  │  │
+│  │  │          VNet: 10.0.0.0/16               │  │  │
+│  │  │  ┌────────────────────────────────────┐  │  │  │
+│  │  │  │      Subnet: 10.0.1.0/24          │  │  │  │
+│  │  │  │  ┌──────────────────────────────┐ │  │  │  │
+│  │  │  │  │    VM: rayan-vm              │ │  │  │  │
+│  │  │  │  │    Ubuntu 22.04 LTS          │ │  │  │  │
+│  │  │  │  │    Standard_D2s_v3           │ │  │  │  │
+│  │  │  │  │    .NET App → port 5000      │ │  │  │  │
+│  │  │  │  └──────────────────────────────┘ │  │  │  │
+│  │  │  └────────────────────────────────────┘  │  │  │
+│  │  └──────────────────────────────────────────┘  │  │
+│  │                                                │  │
+│  │  NSG: Port 22 (SSH) · 80 (HTTP) · 5000 (App)  │  │
+│  │  Public IP: 4.225.161.222 (statisk)            │  │
+│  └────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘</div>
+
+    <h3>4.2 Network Security Group (NSG)</h3>
+    <p>NSG kontrollerar all inkommande nätverkstrafik till VM:en:</p>
+<pre><code><span class="keyword">resource</span> nsg <span class="string">'Microsoft.Network/networkSecurityGroups@2023-09-01'</span> = {
+  name: networkSecurityGroupName
+  location: location
+  properties: {
+    securityRules: [
+      {
+        name: <span class="string">'Allow-SSH'</span>
+        properties: {
+          priority: <span class="attr">1000</span>
+          direction: <span class="string">'Inbound'</span>
+          protocol: <span class="string">'Tcp'</span>
+          destinationPortRange: <span class="string">'22'</span>
+          <span class="comment">// SSH-åtkomst för serverhantering</span>
+        }
+      }
+      {
+        name: <span class="string">'Allow-HTTP'</span>
+        properties: {
+          priority: <span class="attr">1100</span>
+          destinationPortRange: <span class="string">'80'</span>
+          <span class="comment">// HTTP-trafik för webbapplikationen</span>
+        }
+      }
+      {
+        name: <span class="string">'Allow-App-Port'</span>
+        properties: {
+          priority: <span class="attr">1200</span>
+          destinationPortRange: <span class="string">'5000'</span>
+          <span class="comment">// Direkt åtkomst till .NET-applikationen</span>
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+    <h3>4.3 VM med SSH-nyckelautentisering</h3>
+<pre><code><span class="keyword">resource</span> vm <span class="string">'Microsoft.Compute/virtualMachines@2023-09-01'</span> = {
+  name: vmName
+  location: location
+  properties: {
+    hardwareProfile: { vmSize: vmSize }
+    osProfile: {
+      adminUsername: adminUsername
+      linuxConfiguration: {
+        <span class="attr">disablePasswordAuthentication</span>: <span class="keyword">true</span>
+        ssh: {
+          publicKeys: [{
+            path: <span class="string">'/home/${adminUsername}/.ssh/authorized_keys'</span>
+            keyData: sshPublicKey
+          }]
+        }
+      }
+    }
+    storageProfile: {
+      imageReference: {
+        publisher: <span class="string">'Canonical'</span>
+        offer: <span class="string">'0001-com-ubuntu-server-jammy'</span>
+        sku: <span class="string">'22_04-lts-gen2'</span>
+      }
+    }
+  }
+}</code></pre>
+
+    <!-- 5. DEPLOYMENT-PROCESS -->
+    <h2><span class="section-num">5.</span> Deployment-process</h2>
+
+    <h3>5.1 Steg-för-steg</h3>
+    <table class="data-table">
+        <thead>
+            <tr><th>Steg</th><th>Kommando / Åtgärd</th><th>Beskrivning</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1</strong></td>
+                <td><code>az group create --name rayan-rg --location swedencentral</code></td>
+                <td>Skapa Resource Group</td>
+            </tr>
+            <tr>
+                <td><strong>2</strong></td>
+                <td><code>az deployment group create --template-file vm-template.bicep</code></td>
+                <td>Deploya Bicep-mall</td>
+            </tr>
+            <tr>
+                <td><strong>3</strong></td>
+                <td><code>ssh azureuser@4.225.161.222</code></td>
+                <td>Anslut till VM</td>
+            </tr>
+            <tr>
+                <td><strong>4</strong></td>
+                <td><code>bash setup-dotnet.sh</code></td>
+                <td>Installera .NET runtime</td>
+            </tr>
+            <tr>
+                <td><strong>5</strong></td>
+                <td><code>dotnet publish -c Release -r linux-x64 --self-contained true</code></td>
+                <td>Publicera (self-contained)</td>
+            </tr>
+            <tr>
+                <td><strong>6</strong></td>
+                <td><code>scp -r ./publish/* azureuser@4.225.161.222:/opt/webapp/</code></td>
+                <td>Överför filer till VM</td>
+            </tr>
+            <tr>
+                <td><strong>7</strong></td>
+                <td><code>sudo systemctl enable --now webapp.service</code></td>
+                <td>Starta tjänsten</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.2 systemd-konfiguration</h3>
+    <p>Applikationen körs som en systemd-tjänst med säkerhetshärdning:</p>
+<pre><code><span class="comment">[Unit]</span>
+Description=Rayan .NET Web Application
+After=network.target
+
+<span class="comment">[Service]</span>
+User=azureuser
+WorkingDirectory=/opt/webapp
+ExecStart=/usr/bin/dotnet /opt/webapp/WebApp.dll
+Restart=<span class="keyword">always</span>
+RestartSec=10
+Environment=<span class="string">ASPNETCORE_ENVIRONMENT=Production</span>
+Environment=<span class="string">ASPNETCORE_URLS=http://0.0.0.0:5000</span>
+
+<span class="comment"># Säkerhetshärdning</span>
+<span class="attr">NoNewPrivileges</span>=<span class="keyword">true</span>
+<span class="attr">PrivateTmp</span>=<span class="keyword">true</span>
+<span class="attr">ProtectSystem</span>=strict
+<span class="attr">ProtectHome</span>=read-only
+<span class="attr">ReadWritePaths</span>=/opt/webapp
+
+<span class="comment">[Install]</span>
+WantedBy=multi-user.target</code></pre>
+
+    <!-- 6. SÄKERHET -->
+    <h2><span class="section-num">6.</span> Säkerhetsåtgärder</h2>
+
+    <table class="data-table">
+        <thead>
+            <tr><th>Åtgärd</th><th>Beskrivning</th><th>Plats</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>SSH-nycklar</strong></td>
+                <td>Lösenordsinloggning inaktiverad, endast SSH-nycklar tillåts</td>
+                <td>vm-template.bicep</td>
+            </tr>
+            <tr>
+                <td><strong>NSG</strong></td>
+                <td>Endast port 22, 80 och 5000 öppna för inkommande trafik</td>
+                <td>vm-template.bicep</td>
+            </tr>
+            <tr>
+                <td><strong>CSRF-skydd</strong></td>
+                <td>AntiForgeryToken på alla POST-formulär</td>
+                <td>HomeController.cs</td>
+            </tr>
+            <tr>
+                <td><strong>Indatavalidering</strong></td>
+                <td>Server-side och client-side validering av e-postformat</td>
+                <td>SubscribeViewModel.cs</td>
+            </tr>
+            <tr>
+                <td><strong>systemd-härdning</strong></td>
+                <td>NoNewPrivileges, PrivateTmp, ProtectSystem=strict</td>
+                <td>webapp.service</td>
+            </tr>
+            <tr>
+                <td><strong>Non-root</strong></td>
+                <td>Applikationen körs som <code>azureuser</code>, inte root</td>
+                <td>webapp.service</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 7. GIT -->
+    <h2><span class="section-num">7.</span> Git-versionshantering</h2>
+    <p>Projektet har 10 commits som visar utvecklingsprocessen:</p>
+    <ul class="commit-list">
+        <li><span class="commit-num">1</span> Initial projektstruktur och .gitignore</li>
+        <li><span class="commit-num">2</span> .NET MVC-applikation med anpassad startsida</li>
+        <li><span class="commit-num">3</span> Azure Bicep-mall för VM-infrastruktur</li>
+        <li><span class="commit-num">4</span> Deployment-skript och systemd-konfiguration</li>
+        <li><span class="commit-num">5</span> README-dokumentation</li>
+        <li><span class="commit-num">6</span> Säkerhetsdokumentation (SECURITY.md)</li>
+        <li><span class="commit-num">7</span> E-postprenumerationsfunktion med validering</li>
+        <li><span class="commit-num">8</span> Prenumeranthanteringssida</li>
+        <li><span class="commit-num">9</span> UI-design med färgglatt tema och felmeddelanden</li>
+        <li><span class="commit-num">10</span> Azure deployment-parametrar (VM-storlek och region)</li>
+    </ul>
+
+    <!-- 8. SKÄRMBILDER -->
+    <h2 class="page-break"><span class="section-num">8.</span> Skärmbilder</h2>
+    <p><em>Alla skärmbilder visar URL-fältet i webbläsaren.</em></p>
+
+    <h4>8.1 Startsidan (http://4.225.161.222:5000)</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 1: Startsidan med "Rayan" hero-titel, feature-kort och prenumerationsformulär ]
+    </div>
+
+    <h4>8.2 Felmeddelande vid ogiltigt e-postformat</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 2: Valideringsfel — "Invalid email format! Correct format: name@example.com" ]
+    </div>
+
+    <h4>8.3 Lyckad prenumeration</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 3: Bekräftelsemeddelande efter giltig e-post ]
+    </div>
+
+    <h4>8.4 Prenumerantlista (Subscribers)</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 4: Subscribers-sidan med tabell och raderingsknappar ]
+    </div>
+
+    <h4>8.5 Azure Portal — Resurser</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 5: Azure Portal — rayan-rg med VM, VNet, NSG, Public IP ]
+    </div>
+
+    <h4>8.6 GitHub-repositoriet</h4>
+    <div class="screenshot-placeholder">
+        [ Skärmbild 6: GitHub — commits och filstruktur ]
+    </div>
+
+    <!-- 9. UTMANINGAR -->
+    <h2><span class="section-num">9.</span> Utmaningar och lösningar</h2>
+
+    <h3>Problem 1: VM-storlek ej tillgänglig</h3>
+    <div class="warning-box">
+        <strong>Problem:</strong> <code>Standard_B2s</code> var pensionerad i europeiska regioner och kvoten för B-serien var 0.<br>
+        <strong>Lösning:</strong> Systematisk sökning med Azure CLI genom regioner och VM-familjer.
+        Hittade <code>Standard_D2s_v3</code> med tillräcklig quota i Sweden Central.
+    </div>
+
+    <h3>Problem 2: .NET-versionskonflikt</h3>
+    <div class="warning-box">
+        <strong>Problem:</strong> Lokalt: .NET 10 SDK &mdash; VM: .NET 8 runtime.<br>
+        <strong>Lösning:</strong> Self-contained publish (<code>--self-contained true</code>) som buntar runtime:n med applikationen.
+    </div>
+
+    <h3>Problem 3: Windows-radbrytningar (CRLF)</h3>
+    <div class="warning-box">
+        <strong>Problem:</strong> Bash-skript från Windows hade CRLF som orsakade &ldquo;invalid option name&rdquo; på Ubuntu.<br>
+        <strong>Lösning:</strong> <code>sed -i "s/\r$//" script.sh</code> innan exekvering på VM:en.
+    </div>
+
+    <!-- 10. SLUTSATS -->
+    <h2><span class="section-num">10.</span> Slutsats</h2>
+    <p>
+        Projektet demonstrerar en komplett deployment-pipeline från lokal utveckling till produktion i Azure.
+        Genom att använda Infrastructure as Code (Bicep), automatiserade deployment-skript, Git-versionshantering
+        och säkerhetshärdning har jag skapat en reproducerbar och säker lösning.
+    </p>
+    <p>
+        Applikationen är tillgänglig på <strong>http://4.225.161.222:5000</strong> och all källkod finns på
+        <strong>GitHub</strong>: <a href="https://github.com/Raymon85/azure-dotnet-deployment">github.com/Raymon85/azure-dotnet-deployment</a>.
+    </p>
+
+    <!-- FOOTER -->
+    <div class="report-footer">
+        <p>&copy; 2026 Rayan &mdash; Azure Cloud Deployment Project</p>
+    </div>
+
+</div>
+
+</body>
+</html>
