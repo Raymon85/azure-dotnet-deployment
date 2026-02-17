@@ -12,10 +12,10 @@
       "value": "<REPLACE_WITH_YOUR_SSH_PUBLIC_KEY>"
     },
     "vmSize": {
-      "value": "Standard_B2s"
+      "value": "Standard_D2s_v3"
     },
     "location": {
-      "value": "northeurope"
+      "value": "swedencentral"
     }
   }
 }
