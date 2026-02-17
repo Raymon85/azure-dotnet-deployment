@@ -295,19 +295,7 @@ Key security measures in this project:
 
 ---
 
-## Screenshots
 
-> Add your screenshots in the `docs/screenshots/` directory.
-
-| Step | Screenshot |
-|------|------------|
-| Local testing | `docs/screenshots/local-testing.png` |
-| Azure portal - VM overview | `docs/screenshots/azure-vm-overview.png` |
-| Azure portal - NSG rules | `docs/screenshots/azure-nsg-rules.png` |
-| Deployed application | `docs/screenshots/deployed-app.png` |
-| SSH terminal session | `docs/screenshots/ssh-session.png` |
-
----
 
 ## License
 
